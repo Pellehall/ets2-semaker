@@ -1,74 +1,64 @@
-const partsDiv = document.getElementById("parts");
-const selectedList = document.getElementById("selected");
+const fileInput = document.getElementById("fileInput");
+const truckDiv = document.getElementById("truck");
+const list = document.getElementById("accessories");
 const output = document.getElementById("output");
-const truckSelect = document.getElementById("truckSelect");
-const chaosMode = document.getElementById("chaosMode");
-const slider = document.getElementById("lightSlider");
-const lightValue = document.getElementById("lightValue");
 
-let selectedParts = [];
-let currentTruck = "scania";
+let objects = [];
+let accessories = [];
 
-// init trucks
-Object.keys(TRUCKS).forEach(key => {
-  const opt = document.createElement("option");
-  opt.value = key;
-  opt.textContent = TRUCKS[key].name;
-  truckSelect.appendChild(opt);
-});
+// load file
+fileInput.onchange = e => {
+  const file = e.target.files[0];
+  const reader = new FileReader();
 
-truckSelect.onchange = () => {
-  currentTruck = truckSelect.value;
-  renderParts();
+  reader.onload = () => {
+    objects = parseSII(reader.result);
+
+    const truck = findTruck(objects);
+    accessories = findAccessories(objects);
+
+    renderTruck(truck);
+    renderAccessories();
+  };
+
+  reader.readAsText(file);
 };
 
-// slider
-slider.oninput = () => {
-  lightValue.innerText = slider.value;
-};
+// render truck
+function renderTruck(truck) {
+  if (!truck) {
+    truckDiv.innerText = "No truck found";
+    return;
+  }
 
-// check slot compatibility
-function isValid(part) {
-  if (chaosMode.checked) return true;
-  return TRUCKS[currentTruck].slots.includes(part.slot);
+  truckDiv.innerText = truck.uid;
 }
 
-// render parts
-function renderParts() {
-  partsDiv.innerHTML = "";
+// render accessories
+function renderAccessories() {
+  list.innerHTML = "";
 
-  PARTS.forEach(part => {
-    const btn = document.createElement("button");
-    btn.innerText = part.name;
-
-    const valid = isValid(part);
-    btn.className = valid ? "valid" : "invalid";
-
-    btn.onclick = () => {
-      if (!valid && !chaosMode.checked) return;
-      selectedParts.push(part);
-      renderSelected();
-    };
-
-    partsDiv.appendChild(btn);
-  });
-}
-
-// render selected
-function renderSelected() {
-  selectedList.innerHTML = "";
-
-  selectedParts.forEach(p => {
+  accessories.forEach(a => {
     const li = document.createElement("li");
-    li.innerText = p.name + " (" + p.slot + ")";
-    selectedList.appendChild(li);
+    li.innerText = a.props.data_path || "unknown";
+    list.appendChild(li);
   });
 }
 
-// generate
-function generate() {
-  output.innerText = generateSII(selectedParts, slider.value);
+// add new part
+function addPart() {
+  const path = document.getElementById("newPart").value;
+  if (!path) return;
+
+  const newAcc = createAccessory(path);
+
+  objects.push(newAcc);
+  accessories.push(newAcc);
+
+  renderAccessories();
 }
 
-// init
-renderParts();
+// export save
+function exportSave() {
+  output.innerText = generateSave(objects);
+}
