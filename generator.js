@@ -1,36 +1,29 @@
-function generateSII(parts, lightCount) {
-  let output = "";
+function generateSave(objects) {
+  let out = "";
 
-  parts.forEach((p, i) => {
+  objects.forEach(o => {
+    out += `${o.type} : ${o.uid} {\n`;
 
-    let slots = 1;
-    let hookups = 1;
+    Object.keys(o.props).forEach(k => {
+      out += ` ${k}: ${o.props[k]}\n`;
+    });
 
-    // om det är lights → spam
-    if (p.slot === "beacon" || p.slot === "r_grill") {
-      slots = lightCount;
-      hookups = lightCount;
-    }
-
-    output += `
-vehicle_addon_accessory : custom.${i} {
- slot_name: ${slots}
-`;
-
-    for (let j = 0; j < slots; j++) {
-      output += ` slot_name[${j}]: slot_${j}\n`;
-    }
-
-    output += ` slot_hookup: ${hookups}\n`;
-
-    for (let j = 0; j < hookups; j++) {
-      output += ` slot_hookup[${j}]: "smalllight1.addon_hookup"\n`;
-    }
-
-    output += ` data_path: "${p.data_path}"
-}
-`;
+    out += "}\n\n";
   });
 
-  return output;
+  return out;
+}
+
+// skapa ny accessory
+function createAccessory(data_path) {
+  return {
+    type: "vehicle_addon_accessory",
+    uid: "_nameless." + Math.random().toString(16).slice(2),
+    props: {
+      slot_name: "0",
+      slot_hookup: "0",
+      data_path: `"${data_path}"`,
+      refund: "0"
+    }
+  };
 }
