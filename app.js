@@ -1,64 +1,81 @@
-const fileInput = document.getElementById("fileInput");
-const truckDiv = document.getElementById("truck");
-const list = document.getElementById("accessories");
-const output = document.getElementById("output");
-
 let objects = [];
-let accessories = [];
+let selected = [];
 
-// load file
+const fileInput = document.getElementById("fileInput");
+const truckSelect = document.getElementById("truckSelect");
+const grid = document.getElementById("partsGrid");
+const selectedList = document.getElementById("selected");
+const output = document.getElementById("output");
+const categorySelect = document.getElementById("categorySelect");
+
+// init trucks
+Object.keys(TRUCKS).forEach(k => {
+  const opt = document.createElement("option");
+  opt.value = k;
+  opt.innerText = TRUCKS[k].name;
+  truckSelect.appendChild(opt);
+});
+
+// file load
 fileInput.onchange = e => {
-  const file = e.target.files[0];
-  const reader = new FileReader();
-
-  reader.onload = () => {
-    objects = parseSII(reader.result);
-
-    const truck = findTruck(objects);
-    accessories = findAccessories(objects);
-
-    renderTruck(truck);
-    renderAccessories();
+  const r = new FileReader();
+  r.onload = () => {
+    objects = parseSII(r.result);
+    renderParts();
   };
-
-  reader.readAsText(file);
+  r.readAsText(e.target.files[0]);
 };
 
-// render truck
-function renderTruck(truck) {
-  if (!truck) {
-    truckDiv.innerText = "No truck found";
-    return;
-  }
+// render parts
+function renderParts() {
+  grid.innerHTML = "";
 
-  truckDiv.innerText = truck.uid;
-}
+  const filter = categorySelect.value;
 
-// render accessories
-function renderAccessories() {
-  list.innerHTML = "";
+  PARTS.forEach(p => {
+    if (filter !== "all" && p.cat !== filter) return;
 
-  accessories.forEach(a => {
-    const li = document.createElement("li");
-    li.innerText = a.props.data_path || "unknown";
-    list.appendChild(li);
+    const div = document.createElement("div");
+    div.className = "part";
+    div.innerText = p.name;
+
+    div.onclick = () => {
+      selected.push(p);
+      renderSelected();
+    };
+
+    grid.appendChild(div);
   });
 }
 
-// add new part
-function addPart() {
-  const path = document.getElementById("newPart").value;
-  if (!path) return;
+// selected
+function renderSelected() {
+  selectedList.innerHTML = "";
 
-  const newAcc = createAccessory(path);
-
-  objects.push(newAcc);
-  accessories.push(newAcc);
-
-  renderAccessories();
+  selected.forEach(p => {
+    const li = document.createElement("li");
+    li.innerText = p.name;
+    selectedList.appendChild(li);
+  });
 }
 
-// export save
+// export
 function exportSave() {
-  output.innerText = generateSave(objects);
+  let out = "";
+
+  selected.forEach((p, i) => {
+    out += `
+vehicle_addon_accessory : custom.${i} {
+ data_path: "${p.data_path}"
 }
+`;
+  });
+
+  output.innerText = out;
+}
+
+// filter change
+categorySelect.onchange = renderParts;
+
+// init
+renderParts();
