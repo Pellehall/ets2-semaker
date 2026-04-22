@@ -1,13 +1,60 @@
 body {
+  margin: 0;
   font-family: Arial;
-  background: #111;
+  background: #0f1115;
   color: #eee;
 }
 
-li {
-  margin: 4px;
+.topbar {
+  background: #1a1d25;
+  padding: 10px;
+  text-align: center;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.panel {
+  flex: 1;
+  padding: 15px;
+  overflow: auto;
+}
+
+#partsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.part {
+  background: #1e2230;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.part:hover {
+  background: #2a3145;
 }
 
 button {
-  margin: 4px;
+  padding: 8px;
+  margin-top: 10px;
+  background: #3a7cff;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+select, input {
+  width: 100%;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
 }
