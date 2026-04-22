@@ -2,12 +2,30 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>ETS2 Save Builder</title>
+  <title>ETS2 Builder</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>ETS2 Save Editor (Unsafe Mode 🔥)</h1>
+<h1>ETS2 Save Builder 🔥</h1>
+
+<label>Truck:</label>
+<select id="truckSelect"></select>
+
+<br><br>
+
+<label>
+  <input type="checkbox" id="chaosMode">
+  Chaos mode (ignore slots 😈)
+</label>
+
+<br><br>
+
+<label>Light spam:</label>
+<input type="range" id="lightSlider" min="1" max="20" value="1">
+<span id="lightValue">1</span>
+
+<hr>
 
 <div id="parts"></div>
 
