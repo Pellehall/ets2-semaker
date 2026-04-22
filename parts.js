@@ -1,3 +1,14 @@
+const TRUCKS = {
+  scania: {
+    name: "Scania Streamline",
+    slots: ["f_grill", "r_grill", "beacon", "exhaust"]
+  },
+  daf: {
+    name: "DAF XF",
+    slots: ["f_grill", "r_grill", "beacon"]
+  }
+};
+
 const PARTS = [
   {
     name: "Scania Grill",
@@ -10,19 +21,9 @@ const PARTS = [
     data_path: "/def/vehicle/truck/daf.xf/accessory/b_grill/paint.sii"
   },
   {
-    name: "Renault Beacon",
+    name: "Beacon",
     slot: "beacon",
     data_path: "/def/vehicle/truck/renault.t/accessory/beacon/beacon_high.sii"
-  },
-  {
-    name: "Scania Exhaust Left",
-    slot: "exhaust",
-    data_path: "/def/vehicle/truck/scania.streamline/accessory/exhaust_l/side_stripe2.sii"
-  },
-  {
-    name: "Scania Exhaust Right",
-    slot: "exhaust",
-    data_path: "/def/vehicle/truck/scania.streamline/accessory/exhaust_r/side_stripe2.sii"
   },
   {
     name: "Rear Light Bar",
