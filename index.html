@@ -2,32 +2,56 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>ETS2 Save Editor</title>
+  <title>ETS2 Pro Save Editor</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>ETS2 Save Parser 🔧</h1>
+<div class="topbar">
+  <h1>ETS2 Pro Editor</h1>
+</div>
 
-<input type="file" id="fileInput">
+<div class="container">
 
-<h2>Truck</h2>
-<div id="truck"></div>
+  <div class="panel">
 
-<h2>Accessories</h2>
-<ul id="accessories"></ul>
+    <h2>Load Save</h2>
+    <input type="file" id="fileInput">
 
-<h2>Add Part</h2>
-<input id="newPart" placeholder="/def/vehicle/...">
-<button onclick="addPart()">Add</button>
+    <h2>Truck</h2>
+    <select id="truckSelect"></select>
 
-<br><br>
-<button onclick="exportSave()">Export Save</button>
+    <h2>Filter</h2>
+    <select id="categorySelect">
+      <option value="all">All</option>
+      <option value="grill">Grills</option>
+      <option value="lights">Lights</option>
+      <option value="exhaust">Exhaust</option>
+      <option value="interior">Interior</option>
+      <option value="wheels">Wheels</option>
+    </select>
 
-<pre id="output"></pre>
+    <h2>Parts</h2>
+    <div id="partsGrid"></div>
 
+  </div>
+
+  <div class="panel">
+
+    <h2>Selected Parts</h2>
+    <ul id="selected"></ul>
+
+    <button onclick="exportSave()">EXPORT SAVE</button>
+
+    <h2>Output</h2>
+    <pre id="output"></pre>
+
+  </div>
+
+</div>
+
+<script src="parts.js"></script>
 <script src="parser.js"></script>
-<script src="generator.js"></script>
 <script src="app.js"></script>
 
 </body>
