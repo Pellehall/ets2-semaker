@@ -10,13 +10,14 @@ button {
   cursor: pointer;
 }
 
-#parts {
-  display: flex;
-  flex-wrap: wrap;
-}
-
 .part {
   background: #222;
-  margin: 5px;
-  padding: 5px;
+}
+
+.invalid {
+  background: #441111;
+}
+
+.valid {
+  background: #113311;
 }
